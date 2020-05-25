@@ -1,0 +1,130 @@
+{
+  "$schema": "https://statics.teams.microsoft.com/sdk/v1.0/manifest/MicrosoftTeams.schema.json",
+  "manifestVersion": "1.0",
+  "version": "1.0.0",
+  "id": "bc2c2ad5-eace-4c6b-a91d-eb423761a0f8",
+  "packageName": "com.microsoft.teams.samples.hrapp",
+  "developer": {
+    "name": "Microsoft",
+    "websiteUrl": "https://www.microsoft.com",
+    "privacyUrl": "https://www.microsoft.com/privacy",
+    "termsOfUseUrl": "https://www.microsoft.com/termsofuse"
+  },
+  "name": {
+    "short": "Contoso HR",
+    "full": "HR app for Contoso company"
+  },
+  "description": {
+    "short": "HR app for Contoso employees",
+    "full": "This sample HR app showcases many of the capabilities Microsoft Teams supports.  Tab and connector content is hosted for illustrative purposes only."
+  },
+  "icons": {
+    "outline": "outline_icon.png",
+    "color": "color_icon.png"
+  },
+  "accentColor": "#020081",
+  "staticTabs": [
+    {
+      "entityId": "jobPostingsTab",
+      "name": "My job postings",
+      "contentUrl": "https://teams-sampleappnode.azurewebsites.net/tabs/index",
+      "websiteUrl": "https://teams-sampleappnode.azurewebsites.net/tabs/index?web=1",
+      "scopes": [
+        "personal"
+      ]
+    },
+    {
+      "entityId": "candidatesTab",
+      "name": "Candidates",
+      "contentUrl": "https://teamssamplehrapp.azurewebsites.net/channeltab.html",
+      "websiteUrl": "https://teamssamplehrapp.azurewebsites.net/channeltab.html?web=1",
+      "scopes": [
+        "personal"
+      ]
+    }
+  ],
+  "configurableTabs": [
+    {
+      "configurationUrl": "https://teamssamplehrapp.azurewebsites.net/channelconfig.html",
+      "canUpdateConfiguration": true,
+      "scopes": [
+        "team"
+      ]
+    }
+  ],
+  "bots": [
+    {
+      "botId": "c201df69-7490-40c3-aa7f-aef4254cb1ee",
+      "scopes": [
+        "team",
+        "personal"
+      ],
+      "commandLists": [
+        {
+          "scopes": [
+            "team",
+            "personal"
+          ],
+          "commands": [
+            {
+              "title": "help",
+              "description": "Find out what I can do"
+            },
+            {
+              "title": "top candidates",
+              "description": "List the top candidates for your team's open positions"
+            },
+            {
+              "title": "schedule interview",
+              "description": "Schedule an interview for an open position"
+            },
+            {
+              "title": "open positions",
+              "description": "Look up open positions within your organization"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "connectors": [
+    {
+      "connectorId": "0f2fd47a-3bd6-436a-932a-1ab50b3e2a34",
+      "scopes": [
+        "team"
+      ]
+    }
+  ],
+  "composeExtensions": [
+    {
+      "botId": "c201df69-7490-40c3-aa7f-aef4254cb1ee",
+      "scopes": [
+        "personal",
+        "team"
+      ],
+      "commands": [
+        {
+          "id": "searchCmd",
+          "title": "Search positions",
+          "initialRun": true,
+          "description": "Search open positions by keyword",
+          "parameters": [
+            {
+              "name": "keyword",
+              "title": "Keywords",
+              "description": "Position keywords"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "permissions": [
+    "identity",
+    "messageTeamMembers"
+  ],
+  "validDomains": [
+    "teams-sampleappnode.azurewebsites.net",
+    "teamssamplehrapp.azurewebsites.net"
+  ]
+}
