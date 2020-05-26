@@ -1,0 +1,31 @@
+  #This script requires AzureADPreview module, install if not available already
+                #install-module AzureADPreview
+                #Connect to AzureAD
+                Connect-AzureAD 
+                #Get AzureAD group setting for classification
+                $setting = Get-AzureADDirectorySetting | Where-Object -Property DisplayName -Value "Group.Unified" -EQ
+                if($setting)
+                {
+	                #If directory settings is already is available, add your classification types
+	                $setting["ClassificationList"] = "Internal,External,Confidential"
+	
+	                #Make "Internal" as the default classification
+	                $setting["DefaultClassification"] = "Internal"
+	
+	                Set-AzureADDirectorySetting -Id $setting.Id -DirectorySetting $setting
+                }
+                else
+                {
+	                #Create a new directory setting if already one not available
+	                $settingTemplateId = Get-AzureADDirectorySettingTemplate | where {$_.DisplayName -like "Group.Unified"} | Select-Object Id
+	                $Template = Get-AzureADDirectorySettingTemplate -Id $settingTemplateId.Id
+	                $templateSetting = $Template.CreateDirectorySetting()
+	
+	                # Create the required classification types
+	                $templateSetting["ClassificationList"] = "Internal,External,Confidential"
+	
+	                #Make "Internal" as the default classification
+	                $templateSetting["DefaultClassification"] = "Internal"
+	
+	                New-AzureADDirectorySetting -DirectorySetting $templateSetting
+                }

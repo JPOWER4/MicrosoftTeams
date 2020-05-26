@@ -1,0 +1,32 @@
+#This script requires AzureADPreview module, install if not available already
+                #install-module AzureADPreview
+
+                #Connect to AzureAD
+                Connect-AzureAD 
+
+                #Connect to Exchange Online module
+                $UserCredential = Get-Credential
+                $Session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri https://outlook.office365.com/powershell-liveid/ -Credential $UserCredential -Authentication Basic -AllowRedirection
+                Import-PSSession $Session -DisableNameChecking
+
+                $groupSettingsTemplate = (Get-AzureADDirectorySettingTemplate | ? {$_.DisplayName -eq "Group.Unified.Guest"}) 
+                $Groups = (Get-UnifiedGroup -ResultSize Unlimited | Where {$_.Classification -eq "Confidential"}) 
+                ForEach ($Group in $Groups) 
+                { 
+	                $groupSettings = Get-AzureADObjectSetting -TargetType Groups -TargetObjectId $Group.ExternalDirectoryObjectId 
+	                if($groupSettings) 
+	                { 
+		                # If policy already exists for the group, set the group settings object 
+		                $groupSettings["AllowToAddGuests"] = $False 
+		                Set-AzureADObjectSetting -Id $GroupSettings.Id -DirectorySetting $GroupSettings -TargetObjectId $Group.ExternalDirectoryObjectId -TargetType Groups 
+		                Write-Host "Guest access blocked for" $Group.DisplayName 
+	                } 
+	                Else 
+	                { 
+		                # If group settings does not exists, create a new settings object and update 
+		                $Settings = $groupSettingsTemplate.CreateDirectorySetting() 
+		                $Settings["AllowToAddGuests"] = $False 
+		                New-AzureADObjectSetting -DirectorySetting $Settings -TargetObjectId $Group.ExternalDirectoryObjectId -TargetType Groups 
+		                Write-Host "Guest access blocked for" $Group.DisplayName 
+	                } 
+                }
