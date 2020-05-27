@@ -1,0 +1,3 @@
+Set-Executionpolicy RemoteSigned
+Install-Module AzureAD
+Install-module AzureADPreview -AllowClobber

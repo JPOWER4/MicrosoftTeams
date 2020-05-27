@@ -1,0 +1,10 @@
+
+Set-Executionpolicy RemoteSigned
+Import-Module "C:\\Program Files\\Common Files\\Skype for Business Online\\Modules\\SkypeOnlineConnector\\SkypeOnlineConnector.psd1"
+
+$userCredential = Get-Credential
+$sfbSession = New-CsOnlineSession -Credential $userCredential
+Import-PSSession $sfbSession
+
+
+Grant-CsTeamsAppPermissionPolicy -Identity "User02 Teams" -PolicyName "My Custom Policy"

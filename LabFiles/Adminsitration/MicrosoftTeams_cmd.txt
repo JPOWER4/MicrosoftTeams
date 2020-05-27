@@ -1,0 +1,13 @@
+https://docs.microsoft.com/en-us/powershell/module/teams/?view=teams-ps
+
+Install-Module -Name MicrosoftTeams –Force
+
+Get-Module MicrosoftTeams –ListAvailable
+
+Connect-MicrosoftTeams -Credential $cred
+
+Get-Team -User jenkinsns@jpower4dev.onmicrosoft.com
+
+Get-TeamChannel -GroupId 8a497f44-b95b-493e-8c91-4c732ffba35f
+
+Get-TeamUser -GroupId f3dbc837-24b6-493a-b191-15ad6da8f6b4 -Role Member
